@@ -21,10 +21,11 @@
 		circle {
 			fill-opacity: .3;
 			fill: red;
-			stroke-width: 0px;
+			stroke: white;
+			stroke-width: 1px;
 		}
 		circle:hover {
-		  	stroke: black;
+		  	stroke: Yellow;
 		  	stroke-width: 2px;
 		  	cursor: crosshair;
 		}
@@ -32,7 +33,7 @@
 		/*EXPERIMENT WITH YOUR OWN STYLING RULES TO CHANGE THE APPEARANCE OF THE TOOLTIP, THE MENU, AND THE MESSAGE TEXT*/
 		div.tooltip{
 			padding: 6px;
-			background: white;
+			background: black;
 			visibility: hidden;
 			position: absolute;
 			z-index: 10;
@@ -40,6 +41,7 @@
 		p.tooltip-text{
 			margin: 0px;
 			padding: 0px;
+			color: white;
 		}
 
 		div.menu{
@@ -50,7 +52,7 @@
 			right: 0px;
 			width: 250px;
 			height: 500px;
-			background: rgba(255,255,255,.8);
+			background: rgba(200,200,200,.5);
 		}
 
 		em{
@@ -70,6 +72,9 @@
 	<div class="tooltip">
 		<p class="tooltip-text" id="title">This is the title</p>
 		<p class="tooltip-text" id="price">This is the price</p>
+		<p class="tooltip-text" id="lat">This is the lat</p>
+		<p class="tooltip-text" id="lon">This is the lon</p>
+		<p class="tooltip-text" id="address">This is the address</p>
 	</div>
 
 	<!-- EXPERIMENT WITH OTHER FORM ELEMENTS, AND ADD SOME TEXT TO THE MENU TO EXPLAIN WHAT IS HAPPENING ON THE SITE -->
@@ -77,6 +82,7 @@
 		<p><h4>DMC Web Stack</h4></p>
 		<form>
 			<p><input id="heatmap" type="checkbox">Heat Map</p>
+		
 			<p><input type="button" value="Update Data" onclick="updateData()"></p>
 			<p>Status: <em id="message"></em></p>
 		</form>
@@ -97,6 +103,8 @@
 		var tooltip = d3.select("div.tooltip");
 		var tooltip_title = d3.select("#title");
 		var tooltip_price = d3.select("#price");
+		var tooltip_lat = d3.select("#lat");
+		var tooltip_lon = d3.select("#lon");
 
 
 		var map = L.map('map').setView([22.539029, 114.062076], 16);
@@ -132,6 +140,7 @@
 		var transform = d3.geo.transform({point: projectStream});
 		var path = d3.geo.path().projection(transform);
 
+
 		function updateData(){
 
 			var mapBounds = map.getBounds();
@@ -155,6 +164,8 @@
 						tooltip.style("visibility", "visible");
 						tooltip_title.text(d.properties.name);
 						tooltip_price.text("Price: " + d.properties.price);
+						tooltip_lat.text("LATITUDE: " + d.geometry.coordinates[0]);
+						tooltip_lon.text("LONGITUDE: " + d.geometry.coordinates[1]);
 					})
 					.on("mousemove", function(){
 						tooltip.style("top", (d3.event.pageY-10)+"px")
@@ -194,6 +205,7 @@
 				update();
 				map.on("viewreset", update);
 			});
+
 
 		};
 

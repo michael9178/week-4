@@ -77,7 +77,7 @@ def getData():
 		feature["id"] = record._rid
 		feature["properties"]["name"] = record.title
 		feature["properties"]["price"] = record.price
-		feature["properties"]["address"] = record.address
+
 		feature["geometry"]["coordinates"] = [record.latitude, record.longitude]
 
 		output["features"].append(feature)
